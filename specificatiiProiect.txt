@@ -1,0 +1,18 @@
+Specificatii detaliate:
+
+-Userul alege daca este profesor sau student si se logheaza
+
+Profesor:
+-acesta vede o lista cu toate proiectele
+-Daca da click pe un proiect din lista vede evaluarea pentru fiecare livrabil al proiectului, fara identitatea membrilor juriului.
+
+Student:
+-acesta vede o lista cu proiectele pe care le a creat deja si un buton pentru a crea un nou proiect si o lista cu proiectele la care a fost selectat sa fie parte din juriu
+-Butonul de "Creeaza proiect" deschide un formular in care profesorul da un titlu, adauga studenti membri, seteaza livrabilele si termenul acestora
+-Daca da click pe un proiect, acesta poate adauga un video demonstrativ sau un link la un server unde poate fi accesat proiectul, pentru fiecare livrabil partial
+
+-La expirarea unui livrabil partial, serverul nostru va alege aleator juriul si se va seta perioada de timp in care se pot adauga/modifica note.
+-La expirarea timpului in care juratii pot adauga/modifica note se calculeaza nota finala.
+
+
+

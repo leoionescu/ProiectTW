@@ -1,0 +1,19 @@
+Plan de proiect:
+
+Pana pe data de 28.11.2021 vrem sa avem implementate urmatoarele:
+-creare unui server in node.js
+-creare unei baze de date
+-conectarea la baza de date din node.js prin sequelize
+-aduagarea, citirea si modificarea de studenti/profesori la baza de date
+
+Pana pe data de 05.12.2021:
+-crearea requesturilor HTTP in aplicatia de node.js
+-instructiuni de utilizare pentru fiecare request
+
+Pana pe data de 19.12.2021:
+-creare unei aplicatii de frontend folosind React
+-crearea componentelor de baza(ex. lista de proiecte, crearea unui proiect nou)
+
+Pana pe data de 10.01.2022:
+-finalizarea aplicatiei de frontend
+-testare
