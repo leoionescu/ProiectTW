@@ -1,5 +1,5 @@
 import express from 'express';
-import { Profesor, Student, Project } from './repository.mjs';
+import { Professor, Student, Project, Deliverable, ProjectEvaluator } from './repository.mjs';
 import { getRecords, postRecords, deleteRecords, getRecord, deleteRecord, putRecord, patchRecord } from './service.mjs'
 
 const router = express.Router()
@@ -37,4 +37,25 @@ router.route('/projects/:id')
     .delete(async (req, res) => deleteRecord(Project, req, res))
     .patch(async (req, res) => patchRecord(Project, req, res))
 
+router.route('/deliverables')
+    .get(async (req, res) => getRecords(Deliverable, req, res))
+    .post(async (req, res) => postRecords(Deliverable, req, res))
+    .delete(async (req, res) => deleteRecords(Deliverable, req, res))
+
+router.route('/deliverables/:id')
+    .get(async (req, res) => getRecord(Deliverable, req, res))
+    .put(async (req, res) => putRecord(Deliverable, req, res))
+    .delete(async (req, res) => deleteRecord(Deliverable, req, res))
+    .patch(async (req, res) => patchRecord(Deliverable, req, res))
+
+router.route('/projectEvaluators')
+    .get(async (req, res) => getRecords(ProjectEvaluator, req, res))
+    .post(async (req, res) => postRecords(ProjectEvaluator, req, res))
+    .delete(async (req, res) => deleteRecords(ProjectEvaluator, req, res))
+
+router.route('/projectEvaluators/:id')
+    .get(async (req, res) => getRecord(ProjectEvaluator, req, res))
+    .put(async (req, res) => putRecord(ProjectEvaluator, req, res))
+    .delete(async (req, res) => deleteRecord(ProjectEvaluator, req, res))
+    .patch(async (req, res) => patchRecord(ProjectEvaluator, req, res))
 export default router;
