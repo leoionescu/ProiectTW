@@ -4,6 +4,7 @@ const { DataTypes } = Sequelize;
 const sequelize = new Sequelize({
     storage: './database.db',
     dialect: 'sqlite',
+    logging: false
 });
 
 const Professor = sequelize.define('professor', {
@@ -27,6 +28,9 @@ const Professor = sequelize.define('professor', {
         validate: {
             isEmail: true
         }
+    },
+    password: {
+        type: Sequelize.STRING
     }
 })
 
@@ -48,8 +52,21 @@ const Student = sequelize.define('student', {
     email: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
         validate: {
             isEmail: true
+        }
+    },
+    password: {
+        type: Sequelize.STRING
+    },
+}, {
+    instanceMethods: {
+        generateHash(password) {
+            return bcrypt.hash(password, bcrypt.genSaltSync(8));
+        },
+        validPassword(password) {
+            return bcrypt.compare(password, this.password);
         }
     }
 })
@@ -89,41 +106,42 @@ const Deliverable = sequelize.define('deliverable', {
     }
 })
 
-const ProjectEvaluator = sequelize.define('projectEvaluator', {
-    projectId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Project,
-            key:'id'
-        }
+const Grades = sequelize.define('grades', {
+    id: {
+        type: Sequelize.UUID,
+        defaulValue: Sequelize.UUIDV4,
+        allowNull: false,
+        primaryKey: true
     },
-    studentId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: Student,
-            key: 'id'
-        }
+    projectId: {
+        type: Sequelize.UUID,
     },
     grade: {
-        type: Sequelize.FLOAT
+        type: Sequelize.STRING
     }
 })
 
-Project.hasMany(Student, { foreignKey: 'projectMemberId', onDelete: 'CASCADE' })
+const ProjectEvaluator = sequelize.define('projectEvaluator', {
+    grade: {
+        type: Sequelize.STRING
+    }
+})
+
+Project.hasMany(Student, { foreignKey: 'projectMemberId' })
 Student.belongsTo(Project, { foreignKey: 'projectMemberId' })
-// Project.hasMany(Student, { foreignKey: 'projectEvaluatorId', onDelete: 'CASCADE' })
+// Project.hasMany(Student, { foreignKey: 'projectEvaluatorId' })
 // Student.belongsTo(Project, { foreignKey: 'projectEvaluatorId' })
 
-Project.belongsToMany(Student, { through: ProjectEvaluator})
-Student.belongsToMany(Project, { through: ProjectEvaluator})
+// Project.belongsToMany(Student)
+// Student.belongsTo(Project)
 
 
-Project.hasMany(Deliverable, { onDelete: 'CASCADE'})
+Project.hasMany(Deliverable)
 Deliverable.belongsTo(Project)
 
 async function intitialize() {
     await sequelize.authenticate()
-    await sequelize.sync({ alter: true })
+    await sequelize.sync({})
 }
 
 export {
@@ -132,5 +150,6 @@ export {
     Student,
     Project,
     Deliverable,
-    ProjectEvaluator
+    ProjectEvaluator,
+    Grades
 }

@@ -1,6 +1,6 @@
 import express from 'express';
-import { Professor, Student, Project, Deliverable, ProjectEvaluator } from './repository.mjs';
-import { getRecords, postRecords, deleteRecords, getRecord, deleteRecord, putRecord, patchRecord } from './service.mjs'
+import { Professor, Student, Project, Deliverable, ProjectEvaluator, Grades } from './repository.mjs';
+import { getRecords, postRecords, deleteRecords, getRecord, deleteRecord, putRecord, patchRecord, authenticate, addEmailsToProject, addDeliverables, getDeliverables, getProjects, getGrade } from './service.mjs'
 
 const router = express.Router()
 
@@ -15,6 +15,15 @@ router.route('/students/:id')
     .delete(async (req, res) => deleteRecord(Student, req, res))
     .patch(async (req, res) => patchRecord(Student, req, res))
 
+router.route('/addEmailsToProject')
+    .post(async (req, res) => addEmailsToProject(Student, Project, req, res))
+
+router.route('/addDeliverables')
+    .post(async (req, res) => addDeliverables(Project, Deliverable, req, res))
+
+router.route('/getGrade/:id')
+    .get(async (req, res) => getGrade(Grades, req, res))
+
 router.route('/professors')
     .get(async (req, res) => getRecords(Professor, req, res))
     .post(async (req, res) => postRecords(Professor, req, res))
@@ -25,6 +34,12 @@ router.route('/professors/:id')
     .put(async (req, res) => putRecord(Professor, req, res))
     .delete(async (req, res) => deleteRecord(Professor, req, res))
     .patch(async (req, res) => patchRecord(Professor, req, res))
+
+router.route('/authenticateStudent/:email/:password')
+    .get(async (req, res) => authenticate(Student, req, res))
+    
+router.route('/authenticateProfessor/:email/:password')
+    .get(async (req, res) => authenticate(Professor, req, res))    
 
 router.route('/projects')
     .get(async (req, res) => getRecords(Project, req, res))
@@ -43,19 +58,17 @@ router.route('/deliverables')
     .delete(async (req, res) => deleteRecords(Deliverable, req, res))
 
 router.route('/deliverables/:id')
-    .get(async (req, res) => getRecord(Deliverable, req, res))
-    .put(async (req, res) => putRecord(Deliverable, req, res))
-    .delete(async (req, res) => deleteRecord(Deliverable, req, res))
-    .patch(async (req, res) => patchRecord(Deliverable, req, res))
+    .get(async (req, res) => getDeliverables(Deliverable, req, res))
+    .post(async (req, res) => putRecord(Deliverable, req, res))
 
-router.route('/projectEvaluators')
-    .get(async (req, res) => getRecords(ProjectEvaluator, req, res))
-    .post(async (req, res) => postRecords(ProjectEvaluator, req, res))
-    .delete(async (req, res) => deleteRecords(ProjectEvaluator, req, res))
+router.route('/grades')
+    .get(async (req, res) => getRecords(Grades, req, res))
+    .post(async (req, res) => postRecords(Grades, req, res))
+    .delete(async (req, res) => deleteRecords(Grades, req, res))
 
-router.route('/projectEvaluators/:id')
-    .get(async (req, res) => getRecord(ProjectEvaluator, req, res))
-    .put(async (req, res) => putRecord(ProjectEvaluator, req, res))
-    .delete(async (req, res) => deleteRecord(ProjectEvaluator, req, res))
-    .patch(async (req, res) => patchRecord(ProjectEvaluator, req, res))
+router.route('/grades/:id')
+    .get(async (req, res) => getRecord(Grades, req, res))
+    .post(async (req, res) => putRecord(Grades, req, res))
+    .delete(async (req, res) => deleteRecord(Grades, req, res))
+    .patch(async (req, res) => patchRecord(Grades, req, res))
 export default router;
